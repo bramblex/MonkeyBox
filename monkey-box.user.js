@@ -6,10 +6,11 @@
 // @supportURL https://github.com/bramblex/MonkeyBox
 // @license MIT
 // @date 2018-5-30
-// @modified 2018-05-30
+// @modified 2018-05-31
 // @require https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js
 // @grant GM_setValue
 // @grant GM_getValue
+// @grant GM_removeValue
 // @match *://*/*
 // ==/UserScript==
 'use strict';
@@ -56,6 +57,40 @@ var MonkeyBox = function () {
     document.getElementById('monkey-container').className = main.className;
   }
 
+  function _loadLocalData(id) {
+    try {
+      return JSON.parse(localStorage.getItem('monkey-box-' + id + '-data'));
+    } catch (err) {
+      console.warn(err);
+      return null;
+    }
+  }
+
+  function _loadGlobalData(id) {
+    try {
+      return JSON.parse(GM_getValue('monkey-box-' + id + '-data'));
+    } catch (err) {
+      console.warn(err);
+      return null;
+    }
+  }
+
+  function _saveLocalData(id, data) {
+    localStorage.setItem('monkey-box-' + id + '-data', JSON.stringify(data));
+  }
+
+  function _saveGlobalData(id, data) {
+    GM_setValue('monkey-box-' + id + '-data', JSON.stringify(data));
+  }
+
+  function _clearLocalData(id, data) {
+    localStorage.removeItem('monkey-box-' + id + '-data');
+  }
+
+  function _clearGlobalData(id, data) {
+    GM_removeValue('monkey-box-' + id + '-data');
+  }
+
   function addBox(id, box) {
     var name = box.name || id;
     var template = '\n      <div id="monkey-box-wapper" class="monkey-box">\n          ' + (box.style ? '<style>' + addIdToStyle('monkey-box-' + id, box.style) + '</style>' : '') + ' \n          <div id="monkey-box-' + id + '-title" class="monkey-box-title">' + name + '</div>\n          <div id="monkey-box-' + id + '"></div>\n      </div>\n    ';
@@ -77,22 +112,41 @@ var MonkeyBox = function () {
     var isShow = localStorage.getItem('monkey-box-' + id + '-show');
 
     var data = {};
-    if (box.autosave) {
-      try {
-        if (box.autosave === 'local') {
-          data = JSON.parse(localStorage.getItem('monkey-box-' + id + '-data'));
-        } else if (box.autosave === 'global') {
-          data = JSON.parse(GM_getValue('monkey-box-' + id + '-data'));
-        }
-      } catch (e) {
-        console.log('[MonkeyBoxWarn]: load data error for ' + id);
-      }
+    if (box.autosave === 'local') {
+      data = _loadLocalData(id) || data;
+    } else if (box.autosave === 'global') {
+      data = _loadGlobalData(id) || data;
     }
 
+    var mixin = {
+      data: box.data,
+      methods: {
+        loadGlobalData: function loadGlobalData() {
+          return _loadGlobalData(id);
+        },
+        loadLocalData: function loadLocalData() {
+          return _loadLocalData(id);
+        },
+        saveGlobalData: function saveGlobalData(data) {
+          return _saveGlobalData(id, data);
+        },
+        saveLocalData: function saveLocalData(data) {
+          return _saveLocalData(id, data);
+        },
+        clearLocalData: function clearLocalData() {
+          return _clearLocalData(id);
+        },
+        clearGlobalData: function clearGlobalData() {
+          return _clearGlobalData(id);
+        }
+      }
+    };
+
     var vm = new Vue(_extends({}, box, {
+      data: data,
       el: '#monkey-box-' + id,
-      data: _extends({}, box.data, data),
-      template: '<div id="monkey-box-' + id + '" class="' + (isShow ? '' : 'monkey-box-hide') + '">' + box.template + '</div>'
+      template: '<div id="monkey-box-' + id + '" class="' + (isShow ? '' : 'monkey-box-hide') + '">' + box.template + '</div>',
+      mixins: [mixin]
     }));
 
     if (box.autosave) {
@@ -113,9 +167,9 @@ var MonkeyBox = function () {
               clearTimeout(timer);
               timer = setTimeout(function () {
                 if (box.autosave === 'local') {
-                  localStorage.setItem('monkey-box-' + id + '-data', JSON.stringify(_this.$data));
+                  _this.saveLocalData(_this.$data);
                 } else if (box.autosave === 'global') {
-                  GM_setValue('monkey-box-' + id + '-data', JSON.stringify(_this.$data));
+                  _this.saveGlobalData(_this.$data);
                 }
               }, 300);
             }, { deep: true });

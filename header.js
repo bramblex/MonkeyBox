@@ -29,7 +29,7 @@ const header = {
     date: '2018-5-30',
     modified: format(new Date(), 'yyyy-MM-dd'),
     require: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js',
-    grant: ['GM_setValue', 'GM_getValue'],
+    grant: ['GM_setValue', 'GM_getValue', 'GM_removeValue'],
     match: ['*://*/*']
 }
 

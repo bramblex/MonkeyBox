@@ -52,6 +52,40 @@ const MonkeyBox = (() => {
     document.getElementById('monkey-container').className = main.className
   }
 
+  function loadLocalData(id) {
+    try {
+      return JSON.parse(localStorage.getItem(`monkey-box-${id}-data`))
+    } catch (err) {
+      console.warn(err)
+      return null
+    }
+  }
+
+  function loadGlobalData(id) {
+    try {
+      return JSON.parse(GM_getValue(`monkey-box-${id}-data`))
+    } catch (err) {
+      console.warn(err)
+      return null
+    }
+  }
+
+  function saveLocalData(id, data) {
+    localStorage.setItem(`monkey-box-${id}-data`, JSON.stringify(data))
+  }
+
+  function saveGlobalData(id, data) {
+    GM_setValue(`monkey-box-${id}-data`, JSON.stringify(data))
+  }
+
+  function clearLocalData(id, data) {
+    localStorage.removeItem(`monkey-box-${id}-data`)
+  }
+
+  function clearGlobalData(id, data) {
+    GM_removeValue(`monkey-box-${id}-data`)
+  }
+
   function addBox(id, box) {
     const name = box.name || id
     const template = `
@@ -80,25 +114,32 @@ const MonkeyBox = (() => {
     const isShow = localStorage.getItem(`monkey-box-${id}-show`)
 
     let data = {}
-    if (box.autosave) {
-      try {
-        if (box.autosave === 'local') {
-          data = JSON.parse(localStorage.getItem(`monkey-box-${id}-data`))
-        } else if (box.autosave === 'global') {
-          data = JSON.parse(GM_getValue(`monkey-box-${id}-data`))
-        }
-      } catch (e) {
-        console.log(`[MonkeyBoxWarn]: load data error for ${id}`)
+    if (box.autosave === 'local') {
+      data = loadLocalData(id) || data
+    } else if (box.autosave === 'global') {
+      data = loadGlobalData(id) || data
+    }
+
+    const mixin = {
+      data: box.data,
+      methods: {
+        loadGlobalData() { return loadGlobalData(id) },
+        loadLocalData() { return loadLocalData(id) },
+        saveGlobalData(data) { return saveGlobalData(id, data) },
+        saveLocalData(data) { return saveLocalData(id, data) },
+        clearLocalData() { return clearLocalData(id) },
+        clearGlobalData() { return clearGlobalData(id) }
       }
     }
 
     const vm = new Vue({
       ...box,
+      data,
       el: `#monkey-box-${id}`,
-      data: { ...box.data, ...data },
-      template: `<div id="monkey-box-${id}" class="${isShow ? '' : 'monkey-box-hide'}">${box.template}</div>`
+      template: `<div id="monkey-box-${id}" class="${isShow ? '' : 'monkey-box-hide'}">${box.template}</div>`,
+      mixins: [mixin]
     })
-    
+
     if (box.autosave) {
       let timer = null
 
@@ -107,14 +148,13 @@ const MonkeyBox = (() => {
           clearTimeout(timer)
           timer = setTimeout(() => {
             if (box.autosave === 'local') {
-              localStorage.setItem(`monkey-box-${id}-data`, JSON.stringify(this.$data))
+              this.saveLocalData(this.$data)
             } else if (box.autosave === 'global') {
-              GM_setValue(`monkey-box-${id}-data`, JSON.stringify(this.$data))
+              this.saveGlobalData(this.$data)
             }
           }, 300)
         }, { deep: true })
       }
-
 
     }
 
