@@ -7,11 +7,9 @@
 // @license MIT
 // @date 2018-5-30
 // @modified 2018-05-31
-// @require https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js
 // @grant GM_setValue
 // @grant GM_getValue
 // @grant GM_removeValue
-// @match *://*/*
 // ==/UserScript==
 'use strict';
 
