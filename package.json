@@ -1,0 +1,25 @@
+{
+  "name": "monkey-box",
+  "version": "0.0.1",
+  "author": {
+    "name": "bramblex",
+    "email": "qjnight@gmail.com"
+  },
+  "description": "",
+  "homepage": "https://github.com/bramblex/MonkeyBox",
+  "repository": {
+    "type": "git",
+    "url": " https://github.com/bramblex/MonkeyBox.git"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/babel monkey-box.js -o monkey-box.user.js && node ./header.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1"
+  }
+}

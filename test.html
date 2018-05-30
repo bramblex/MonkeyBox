@@ -1,10 +1,43 @@
 
 <html>
-  <head></head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  </head>
 
   <body>
-    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
     <script src="./monkey-box.js"></script>
+    <script>
+      MonkeyBox.addBox('TestBox', {
+        name: 'InputTest',
+        template: `
+        <div><input v-model="msg"><button @click="clear">clear</button></div>
+        <div>{{ msg }}</div>
+        `,
+        data: {
+          msg: ''
+        },
+        autosave: 'local',
+        methods: {
+          clear() { this.msg = '' }
+        }
+      })
+
+      MonkeyBox.addBox('TestBox2', {
+        name: 'InputTest2',
+        template: `
+        <div><input v-model="msg"><button @click="clear">clear</button></div>
+        <div>{{ msg }}</div>
+        `,
+        data: {
+          msg: ''
+        },
+        autosave: 'local',
+        methods: {
+          clear() { this.msg = '' }
+        }
+      })
+    </script>
   </body>
 
 </html>
