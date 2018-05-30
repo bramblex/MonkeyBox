@@ -84,11 +84,11 @@ const MonkeyBox = (() => {
       try {
         if (box.autosave === 'local') {
           data = JSON.parse(localStorage.getItem(`monkey-box-${id}-data`))
-        } else if (mv.autosave === 'global') {
+        } else if (box.autosave === 'global') {
           data = JSON.parse(GM_getValue(`monkey-box-${id}-data`))
         }
       } catch (e) {
-        console.log(`[MonkeyBoxWarn]: load data error for ${$id}`)
+        console.log(`[MonkeyBoxWarn]: load data error for ${id}`)
       }
     }
 
