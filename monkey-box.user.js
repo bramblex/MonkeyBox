@@ -2,7 +2,7 @@
 // @name monkey-box
 // @author <bramblex/qjnight@gmail.com>
 // @version 0.0.1
-// @description 
+// @description A simple ui framework for monkey script
 // @supportURL https://github.com/bramblex/MonkeyBox
 // @license MIT
 // @date 2018-5-30

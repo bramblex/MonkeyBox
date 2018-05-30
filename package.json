@@ -5,7 +5,7 @@
     "name": "bramblex",
     "email": "qjnight@gmail.com"
   },
-  "description": "",
+  "description": "A simple ui framework for monkey script",
   "homepage": "https://github.com/bramblex/MonkeyBox",
   "repository": {
     "type": "git",
