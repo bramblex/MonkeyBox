@@ -6,7 +6,7 @@
 // @supportURL https://github.com/bramblex/MonkeyBox
 // @license MIT
 // @date 2018-5-30
-// @modified 2018-05-31
+// @modified 2018-07-30
 // @grant GM_setValue
 // @grant GM_getValue
 // @grant GM_removeValue
@@ -91,6 +91,7 @@ var MonkeyBox = function () {
 
   function addBox(id, box) {
     var name = box.name || id;
+    box.data = box.data || {};
     var template = '\n      <div id="monkey-box-wapper" class="monkey-box">\n          ' + (box.style ? '<style>' + addIdToStyle('monkey-box-' + id, box.style) + '</style>' : '') + ' \n          <div id="monkey-box-' + id + '-title" class="monkey-box-title">' + name + '</div>\n          <div id="monkey-box-' + id + '"></div>\n      </div>\n    ';
     var tmp = document.createElement('div');
     tmp.innerHTML = template.trim();

@@ -88,6 +88,7 @@ const MonkeyBox = (() => {
 
   function addBox(id, box) {
     const name = box.name || id
+    box.data = box.data || {}
     const template = `
       <div id="monkey-box-wapper" class="monkey-box">
           ${box.style ? `<style>${addIdToStyle(`monkey-box-${id}`, box.style)}</style>` : ''} 
