@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>MonkeyBox</title>
+</head>
+<body>
+  <script src="./main.ts"></script>
+  <script>
+    $MonkeyBox
+      .register('qiaojian_1', '测试用组件1', {
+        template: '<div class="test">hello</div>',
+        style: '.test {color: red} '
+      })
+      .register('qiaojian_2', '测试用组件2', {
+        template: '<div class="test">hello</div>',
+        style: '.test {color: green} '
+      })
+      .register('qiaojian_3', '测试用组件3', {
+        template: '<div class="test">hello</div>',
+        style: '.test {color: yellow}'
+      });
+  </script>
+  </body>
+
+  </html>
