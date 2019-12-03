@@ -19,6 +19,7 @@ const monkeyStyle = `
     color: black;
 
     border: 2px solid ${monkeyColor};
+    background: #FFF;
   }
 
   #monkey-box-button {
