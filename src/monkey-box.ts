@@ -86,7 +86,7 @@ interface MonkeyBoxComponent {
   template?: string
 }
 
-const monkeyBoxCache = new Cache('monkey_box', GMStore);
+const monkeyBoxCache = new Cache('monkey_box');
 
 export class MonkeyBox {
   private readonly vm: any
@@ -125,13 +125,6 @@ export class MonkeyBox {
       },
       create(this: { hidden: boolean }) {
         this.hidden = monkeyBoxCache.get('hidden') || true;
-        GMStore.watch(monkeyBoxCache.createCacheKey('hidden'), (_, __, newValue) => {
-          try {
-            this.hidden = JSON.parse(newValue);
-          } catch (err) {
-            // ignore
-          }
-        })
       }
     })
   }
