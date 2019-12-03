@@ -6,5 +6,8 @@
 
 ## Usage
 
-```JavaScript // @require https://github.com/bramblex/MonkeyBox/raw/master/monkey-box.user.js
+```JavaScript
+// @require https://github.com/bramblex/MonkeyBox/raw/master/monkey-box.user.js
 ```
+
+详见 `src/dev-page`
