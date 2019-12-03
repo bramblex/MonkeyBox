@@ -9,6 +9,7 @@ const monkeyStyle = `
     width: 180px;
 
     position: fixed;
+    z-index: 10000;
     top: 25%;
     right: 0;
     transition: right 0.3s;
