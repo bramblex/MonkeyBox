@@ -12,8 +12,8 @@
     "url": " https://github.com/bramblex/MonkeyBox.git"
   },
   "scripts": {
-    "dev": "parcel src/dev-page.html --no-content-hash",
-    "build": "parcel build src/main.ts --no-content-hash"
+    "dev": "parcel src/dev-page.html",
+    "build": "parcel build src/main.ts --no-content-hash && node scripts/create-user-script.js"
   },
   "license": "MIT",
   "devDependencies": {

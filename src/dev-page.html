@@ -8,12 +8,30 @@
   <title>MonkeyBox</title>
 </head>
 <body>
+  <script>
+    var $MonkeyBox;
+  </script>
   <script src="./main.ts"></script>
   <script>
     $MonkeyBox
       .register('qiaojian_1', '测试用组件1', {
-        template: '<div class="test">hello</div>',
-        style: '.test {color: red} '
+        data: function () {
+          const cache = new $MonkeyBox.utils.Cache('qiaojian_1');
+          const a = cache.get('a') || 0;
+          const b = cache.get('b') || 4;
+          cache.set('a', a + 1);
+          cache.set('b', b + 1);
+          return {
+            a, b
+          };
+        },
+        template: '<div class="test" @click="sayHello">hello: {{a}} - {{b}} </div>',
+        style: '.test {color: red} ',
+        methods: {
+          sayHello() {
+            alert('hello');
+          }
+        }
       })
       .register('qiaojian_2', '测试用组件2', {
         template: '<div class="test">hello</div>',

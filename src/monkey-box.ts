@@ -1,5 +1,8 @@
+import { Cache } from './cache'
 
 const Vue = require('vue/dist/vue.common')
+
+const monkeyColor = '#392f41'
 
 const monkeyStyle = `
   #monkey-box {
@@ -8,13 +11,14 @@ const monkeyStyle = `
     position: fixed;
     top: 25%;
     right: 0;
+    transition: right 0.3s;
 
     font-size: 16px;
     line-hight: 18px;
     letter-space: normal;
     color: black;
 
-    border: 2px solid orange;
+    border: 2px solid ${monkeyColor};
   }
 
   #monkey-box-button {
@@ -26,7 +30,7 @@ const monkeyStyle = `
     text-align: center;
     line-height: 24px;
     fonts-size: 22px;
-    background: orange;
+    background: ${monkeyColor};
     color: white;
 
     user-select: none;
@@ -41,13 +45,17 @@ const monkeyStyle = `
 
   .monkey-box-container {
     padding: 4px;
-    border-bottom: 2px solid orange;
+    border-bottom: 1px solid ${monkeyColor};
+  }
+
+  .monkey-box-container:last-child {
+    border-bottom: none;
   }
 
   .monkey-box-title {
     text-align: center;
     user-select: none;
-    border-bottom: 1px solid #fff0c9;
+    border-bottom: 1px solid #EFEFEF;
   }
 `
 
@@ -83,6 +91,8 @@ export class MonkeyBox {
     style.innerText = scope ? (styleString.replace(/(^|})\s*([^]*?)\s*\{/g, `$1\n${scope} $2 {`).trim()) : styleString
     document.head.appendChild(style)
   }
+
+  public utils = { Cache }
 
   constructor() {
     this.createStyle(monkeyStyle)

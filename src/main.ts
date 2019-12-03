@@ -1,15 +1,19 @@
+import { MonkeyBox } from "./monkey-box";
+
 declare global {
   interface Window {
-    $MonkeyBox: MonkeyBox
+    __$MonkeyBox__?: MonkeyBox
   }
 }
 
+declare var $MonkeyBox: MonkeyBox;
 declare const unsafeWindow: Window;
-
-import { MonkeyBox } from "./monkey-box";
-
 if (typeof unsafeWindow === 'object') {
-  unsafeWindow.$MonkeyBox = unsafeWindow.$MonkeyBox || new MonkeyBox();
+  unsafeWindow.__$MonkeyBox__ = unsafeWindow.__$MonkeyBox__ || new MonkeyBox();
+  $MonkeyBox = unsafeWindow.__$MonkeyBox__
 } else {
-  window.$MonkeyBox = window.$MonkeyBox || new MonkeyBox();
+  window.__$MonkeyBox__ = window.__$MonkeyBox__ || new MonkeyBox();
+  $MonkeyBox = window.__$MonkeyBox__;
 }
+
+console.log('[MonkeyBoxLoad]:', $MonkeyBox);

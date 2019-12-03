@@ -55,5 +55,11 @@ const header_code = Object.entries(header)
 
 fs.writeFileSync(
   path.join(__dirname, "../monkey-box.user.js"),
-  ["// ==UserScript==", header_code, "// ==/UserScript==", body_code].join("\n")
+  [
+    "// ==UserScript==",
+    header_code,
+    "// ==/UserScript==",
+    "var $MonkeyBox;",
+    body_code
+  ].join("\n")
 );
