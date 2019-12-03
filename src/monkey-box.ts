@@ -115,16 +115,13 @@ export class MonkeyBox {
       template: monkeyTemplate,
       data: {
         boxes: [],
-        hidden: true
+        hidden: monkeyBoxCache.get('hidden')
       },
       methods: {
         toggle(this: { hidden: boolean }) {
           this.hidden = !this.hidden;
           monkeyBoxCache.set('hidden', this.hidden);
         }
-      },
-      create(this: { hidden: boolean }) {
-        this.hidden = !!monkeyBoxCache.get('hidden');
       }
     })
   }
