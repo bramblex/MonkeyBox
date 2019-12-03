@@ -124,7 +124,7 @@ export class MonkeyBox {
         }
       },
       create(this: { hidden: boolean }) {
-        this.hidden = monkeyBoxCache.get('hidden') || true;
+        this.hidden = !!monkeyBoxCache.get('hidden');
       }
     })
   }
