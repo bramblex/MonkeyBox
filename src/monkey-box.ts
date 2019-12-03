@@ -1,4 +1,5 @@
 import { Cache } from './cache'
+import { GMStore } from './gm-store'
 
 const Vue = require('vue/dist/vue.common')
 
@@ -85,6 +86,8 @@ interface MonkeyBoxComponent {
   template?: string
 }
 
+const monkeyBoxCache = new Cache('monkey_box', GMStore);
+
 export class MonkeyBox {
   private readonly vm: any
 
@@ -94,7 +97,10 @@ export class MonkeyBox {
     document.head.appendChild(style)
   }
 
-  public utils = { Cache }
+  public utils = {
+    Cache,
+    GMStore,
+  }
 
   constructor() {
     this.createStyle(monkeyStyle)
@@ -102,6 +108,7 @@ export class MonkeyBox {
     const el = document.createElement('div')
     el.id = 'monkey-box'
     document.body.appendChild(el)
+
 
     this.vm = new Vue({
       el,
@@ -111,7 +118,20 @@ export class MonkeyBox {
         hidden: true
       },
       methods: {
-        toggle(this: any) { this.hidden = !this.hidden }
+        toggle(this: { hidden: boolean }) {
+          this.hidden = !this.hidden;
+          monkeyBoxCache.set('hidden', this.hidden);
+        }
+      },
+      create(this: { hidden: boolean }) {
+        this.hidden = monkeyBoxCache.get('hidden') || true;
+        GMStore.watch(monkeyBoxCache.createCacheKey('hidden'), (_, __, newValue) => {
+          try {
+            this.hidden = JSON.parse(newValue);
+          } catch (err) {
+            // ignore
+          }
+        })
       }
     })
   }

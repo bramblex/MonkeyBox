@@ -37,7 +37,15 @@ const header = {
   license: package_json.license,
   date: "2018-5-30",
   modified: format(new Date(), "yyyy-MM-dd"),
-  grant: ["GM_setValue", "GM_getValue", "GM_removeValue", "unsafeWindow"]
+  grant: [
+    "unsafeWindow",
+    "GM_setValue",
+    "GM_getValue",
+    "GM_deleteValue",
+    "GM_listValues",
+    "GM_addValueChangeListener",
+    "GM_removeValueChangeListener"
+  ]
 };
 
 const body_code = fs.readFileSync(
