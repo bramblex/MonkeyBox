@@ -84,6 +84,7 @@ interface MonkeyBoxComponent {
   name?: string,
   style?: string,
   template?: string
+  priority?: number
 }
 
 const monkeyBoxCache = new Cache('monkey_box');
@@ -132,10 +133,13 @@ export class MonkeyBox {
     }
     component.name = id
     component.template = component.template || '<div>(Empty Body)</div>'
+    component.priority = Math.min(Math.max((component.priority || component.priority === 0) ? component.priority : 5, 0), 9)
     if (component.style) {
       this.createStyle(component.style, '#monkey-box-component-' + id)
     }
-    this.vm.$data.boxes.push({ id, title, component })
+    const { priority } = component
+    this.vm.$data.boxes
+      = this.vm.$data.boxes.concat([Object.freeze({ id, priority, title, component })]).sort((l: { priority: number }, r: { priority: number }) => l.priority - r.priority)
     return this
   }
 }
