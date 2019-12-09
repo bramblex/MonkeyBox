@@ -90,7 +90,7 @@ interface MonkeyBoxComponent {
 const monkeyBoxCache = new Cache('monkey_box');
 
 export class MonkeyBox {
-  private readonly vm: any
+  private vm: any
 
   private createStyle(styleString: string, scope?: string) {
     const style = document.createElement('style')
@@ -98,12 +98,7 @@ export class MonkeyBox {
     document.head.appendChild(style)
   }
 
-  public utils = {
-    Cache,
-    GMStore,
-  }
-
-  constructor() {
+  private init() {
     this.createStyle(monkeyStyle)
 
     const el = document.createElement('div')
@@ -127,7 +122,15 @@ export class MonkeyBox {
     })
   }
 
+  public utils = {
+    Cache,
+    GMStore,
+  }
+
   public register(id: string, title: string, component: MonkeyBoxComponent) {
+    if (!this.vm) {
+      this.init()
+    }
     if (!/^[0-9A-Za-z_]+$/.test(id)) {
       throw new Error(`Invalid id ${id}.`)
     }
